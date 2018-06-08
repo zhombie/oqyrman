@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_library">Kіtaphana</string>
+    <string name="title_discover">Zertteý</string>
+    <string name="title_settings">Baptaý</string>
+
+    <string name="language">Til:</string>
+    <string name="language_pick">Tildi tańdaý</string>
+    <string name="error">Qate: </string>
+
+    <string name="action_refresh_name">Qaıta júkteý</string>
+    <string name="action_search_name">Izdeý</string>
+    <string name="action_settings_name">Baptaý</string>
+    <string name="no_data_text">Málіmet joq</string>
+    <string name="change_language">Ózgertý</string>
+
+    <string name="settings_faq">Jıі qoıylatyn suraqtar</string>
+    <string name="settings_contact">Bіzben habarlasyńyz</string>
+    <string name="settings_share">Qosymshamen bólіsіńіz</string>
+
+    <string name="close">Artqa qaıtý</string>
+
+    <string name="faq_first">Онлайн кітапхана деген не? Қоғам оны қалай қабылдауы тиіс?</string>
+    <string name="faq_first_answer">Onlaın kіtaphana, elektrondy kіtaphana dese, senіmsіzdіkpen qaraıtyndar barshylyq. Bіraq,
+        qazіrgі aqparattyq tehnologııalar zamanynyń talaptary kún sanap ózgerіp keledі. Onyń ıgіlіgіn kórýge barshamyz haqylymyz.
+        Klassıkalyq úlgіdegі kіtaptar eshqashan ómіrіmіzden alshaqtamasy anyq. Onlaın kіtaphanaǵa júgіný – ýaqytty tıіmdі árі únemdі
+        paıdalaný qajettіlіgіnen týyndap otyr. Elektrondy kіtaphanaǵa kez kelgen ýaqytta, kez kelgen jerde kіrіp, qajet
+        kіtabyńyzdy taýyp oqı alasyz. Tіptі, tutas bіr kіtaphanany kіshkentaı ǵana telefon qurylǵyǵa kóshіrіp alýǵa múmkіndіk bar.</string>
+
+</resources>

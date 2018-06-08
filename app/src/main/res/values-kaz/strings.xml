@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_library">Кітапхана</string>
+    <string name="title_discover">Зерттеу</string>
+    <string name="title_settings">Баптау</string>
+
+    <string name="language">Тіл:</string>
+    <string name="language_pick">Тілді таңдау</string>
+    <string name="error">Қате: </string>
+
+    <string name="action_refresh_name">Қайта жүктеу</string>
+    <string name="action_search_name">Іздеу</string>
+    <string name="action_settings_name">Баптау</string>
+    <string name="no_data_text">Мәлімет жоқ</string>
+    <string name="change_language">Өзгерту</string>
+
+    <string name="settings_faq">Жиі қойылатын сұрақтар</string>
+    <string name="settings_contact">Бізбен хабарласыңыз</string>
+    <string name="settings_share">Қосымшамен бөлісіңіз</string>
+
+    <string name="close">Артқа қайту</string>
+
+    <string name="faq_first">Онлайн кітапхана деген не? Қоғам оны қалай қабылдауы тиіс?</string>
+    <string name="faq_first_answer">Онлайн кітапхана, электронды кітапхана десе, сенімсіздікпен қарайтындар баршылық. Бірақ,
+        қазіргі ақпараттық технологиялар заманының талаптары күн санап өзгеріп келеді. Оның игілігін көруге баршамыз хақылымыз.
+        Классикалық үлгідегі кітаптар ешқашан өмірімізден алшақтамасы анық. Онлайн кітапханаға жүгіну – уақытты тиімді әрі үнемді
+        пайдалану қажеттілігінен туындап отыр. Электронды кітапханаға кез келген уақытта, кез келген жерде кіріп, қажет
+        кітабыңызды тауып оқи аласыз. Тіпті, тұтас бір кітапхананы кішкентай ғана телефон құрылғыға көшіріп алуға мүмкіндік бар.</string>
+</resources>
