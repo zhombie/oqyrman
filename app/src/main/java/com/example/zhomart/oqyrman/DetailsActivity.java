@@ -9,18 +9,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,11 +33,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.zhomart.oqyrman.Fragments.DiscoverFragment;
 import com.example.zhomart.oqyrman.Models.Book;
-import com.example.zhomart.oqyrman.R;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -79,60 +75,56 @@ public class DetailsActivity extends AppCompatActivity {
                 Request.Method.GET,
                 URL + "/" + position + ".json",
                 null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+                response -> {
+                    System.out.println(response);
+                    Gson gson = new Gson();
+                    final Book book = gson.fromJson(response.toString(), Book.class);
+                    if (language.equals("es")){
+                        Glide.with(getBaseContext())
+                                .load(URL + "/" + book.getImage_latin())
+                                .apply(new RequestOptions()
+                                        .centerInside())
+                                .into(backgroundImage);
 
-                        System.out.println(response);
-                        Gson gson = new Gson();
-                        final Book book = gson.fromJson(response.toString(), Book.class);
-                        if (language.equals("es")){
-                            Glide.with(getBaseContext())
-                                    .load(URL + "/" + book.getImage_latin())
-                                    .apply(new RequestOptions()
-                                            .centerInside())
-                                    .into(backgroundImage);
+                        getSupportActionBar().setTitle(book.getTitle_latin());
+                        content.setText(book.getDescription_latin());
+                    } else{
+                        Glide.with(getBaseContext())
+                                .load(URL + "/" + book.getImage())
+                                .apply(new RequestOptions()
+                                        .centerInside())
+                                .into(backgroundImage);
 
-                            getSupportActionBar().setTitle(book.getTitle_latin());
-                            content.setText(book.getDescription_latin());
-                        } else{
-                            Glide.with(getBaseContext())
-                                    .load(URL + "/" + book.getImage())
-                                    .apply(new RequestOptions()
-                                            .centerInside())
-                                    .into(backgroundImage);
+                        getSupportActionBar().setTitle(book.getTitle());
+                        content.setText(book.getDescription());
+                    }
 
-                            getSupportActionBar().setTitle(book.getTitle());
-                            content.setText(book.getDescription());
-                        }
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!book.getEpub_cyrillic().isEmpty()) {
+                                if (haveStoragePermission()) {
+                                    String url = URL + "/epub/test.epub";
+                                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                                    request.setDescription("Some description");
+                                    request.setTitle("Some title");
+                                    System.out.println(url);
+                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOCUMENTS, book.getEpub_latin());
 
-                        fab.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (!book.getEpub_cyrillic().isEmpty()) {
-                                    if (haveStoragePermission()) {
-                                        String url = URL + "/epub/test.epub";
-                                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                                        request.setDescription("Some description");
-                                        request.setTitle("Some title");
-                                        System.out.println(url);
-                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOCUMENTS, book.getEpub_latin());
-
-                                        // get download service and enqueue file
-                                        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                                        if (manager != null) {
-                                            manager.enqueue(request);
-                                        }
-                                    } else {
-                                        Toast.makeText(getBaseContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
+                                    // get download service and enqueue file
+                                    DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                                    if (manager != null) {
+                                        manager.enqueue(request);
                                     }
                                 } else {
                                     Toast.makeText(getBaseContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                                 }
+                            } else {
+                                Toast.makeText(getBaseContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                    });
 
-                    }
                 },
                 new Response.ErrorListener(){
                     @Override

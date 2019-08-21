@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -34,18 +33,11 @@ import com.example.zhomart.oqyrman.SearchableActivity;
 import com.example.zhomart.oqyrman.Utils.GridSpacingItemDecoration;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
 
 import org.json.JSONArray;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +60,7 @@ public class DiscoverFragment extends Fragment implements SwipeRefreshLayout.OnR
     private OnFragmentInteractionListener mListener;
 
     private static final String TAG = DiscoverFragment.class.getSimpleName();
-    private static final String URL = "http://192.168.43.197/oqyrman";
+    private static final String URL = "http://192.168.64.2/oqyrman";
 
     private List<Book> movieList;
     private DiscoverAdapter mAdapter;
@@ -140,12 +132,9 @@ public class DiscoverFragment extends Fragment implements SwipeRefreshLayout.OnR
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
         fetchStoreItems();
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefresh.setRefreshing(true);
-                fetchStoreItems();
-            }
+        swipeRefresh.setOnRefreshListener(() -> {
+            swipeRefresh.setRefreshing(true);
+            fetchStoreItems();
         });
 
         if (mAdapter == null){
@@ -164,39 +153,33 @@ public class DiscoverFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private void fetchStoreItems() {
         final JsonArrayRequest request = new JsonArrayRequest(URL + "/books.json",
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if (response == null) {
-                            Toast.makeText(getActivity(), "Couldn't fetch the store items! Please try again.", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        List<Book> items = new Gson().fromJson(response.toString(), new TypeToken<List<Book>>() {
-                        }.getType());
-
-                        System.out.println(items);
-
-                        movieList.clear();
-                        movieList.addAll(items);
-
-                        mAdapter.notifyDataSetChanged();
-
-                        recyclerView.setVisibility(View.VISIBLE);
-                        noDataLayout.setVisibility(View.GONE);
-                        swipeRefresh.setRefreshing(false);
+                response -> {
+                    if (response == null) {
+                        Toast.makeText(getActivity(), "Couldn't fetch the store items! Please try again.", Toast.LENGTH_LONG).show();
+                        return;
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                recyclerView.setVisibility(View.GONE);
-                noDataLayout.setVisibility(View.VISIBLE);
-                // error in getting json
-                Log.e(TAG, getString(R.string.error) + error.getMessage());
-//              Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                swipeRefresh.setRefreshing(false);
-            }
-        });
+
+                    List<Book> items = new Gson().fromJson(response.toString(), new TypeToken<List<Book>>() {
+                    }.getType());
+
+                    System.out.println(items);
+
+                    movieList.clear();
+                    movieList.addAll(items);
+
+                    mAdapter.notifyDataSetChanged();
+
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataLayout.setVisibility(View.GONE);
+                    swipeRefresh.setRefreshing(false);
+                }, error -> {
+                    recyclerView.setVisibility(View.GONE);
+                    noDataLayout.setVisibility(View.VISIBLE);
+                    // error in getting json
+                    Log.e(TAG, getString(R.string.error) + error.getMessage());
+    //              Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    swipeRefresh.setRefreshing(false);
+                });
 
         MyApplication.getInstance().addToRequestQueue(request);
     }
